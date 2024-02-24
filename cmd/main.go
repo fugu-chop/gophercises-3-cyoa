@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	story "gophercise-cyoa"
 	"log"
@@ -9,8 +10,12 @@ import (
 )
 
 func main() {
+	// Use flags to allow user input file location
+	fileName := flag.String("filename", "gopher.json", "file location of story JSON")
+	flag.Parse()
+
 	// Read file from OS to bytes
-	jsonPayload, err := os.ReadFile("./gopher.json")
+	jsonPayload, err := os.ReadFile(*fileName)
 	if err != nil {
 		log.Fatalf("could not open local json file: %v", err)
 	}
