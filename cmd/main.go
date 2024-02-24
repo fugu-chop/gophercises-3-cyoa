@@ -15,14 +15,15 @@ func main() {
 	flag.Parse()
 
 	// Read file from OS to bytes
-	jsonPayload, err := os.ReadFile(*fileName)
+	jsonPayload, err := os.Open(*fileName)
 	if err != nil {
 		log.Fatalf("could not open local json file: %v", err)
 	}
 
 	// Unmarshal JSON to type
 	var parsedJson story.Chapter
-	err = json.Unmarshal(jsonPayload, &parsedJson)
+	decoder := json.NewDecoder(jsonPayload)
+	err = decoder.Decode(&parsedJson)
 	if err != nil {
 		log.Fatalf("could not parse json: %v", err)
 	}
