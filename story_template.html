@@ -12,12 +12,14 @@
     <p>{{.}}</p>
     {{end}}
 
+    {{if .Options}}
     <h4>What action do you take?</h4>
     <ul>
       {{range .Options}}
       <li><a href={{.Arc}}>{{.Text}}</a></li>
       {{end}}
     </ul>
+    {{end}}
   </body>
 
 </html>
