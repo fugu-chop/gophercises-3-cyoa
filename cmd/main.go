@@ -5,23 +5,34 @@ import (
 	"fmt"
 	story "gophercise-cyoa"
 	"log"
+	"net/http"
 )
+
+type storyHandler struct {
+	StoryData story.Chapter
+}
+
+func (s storyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(s.StoryData[story.StoryStart])
+}
 
 func main() {
 	// Use flags to allow user input file location
 	fileName := flag.String("filename", "gopher.json", "file location of story JSON")
 	flag.Parse()
 
-	storyData, err := story.ParseJSON(fileName)
+	jsonStoryData, err := story.ParseJSON(fileName)
 	if err != nil {
 		log.Fatalf("could not open local json file: %v", err)
 	}
 
-	// Start the story
-	intro, ok := storyData[story.StoryStart]
-	if !ok {
-		log.Fatalf("story is missing an intro")
+	// Create handler with data
+	storyDataHandler := &storyHandler{
+		StoryData: *jsonStoryData,
 	}
 
-	fmt.Println(intro)
+	// start HTTP server
+	mux := http.NewServeMux()
+	mux.Handle("/home", *storyDataHandler)
+	http.ListenAndServe(":8080", mux)
 }

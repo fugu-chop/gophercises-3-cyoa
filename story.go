@@ -19,7 +19,7 @@ type Page struct {
 	Options []Option `json:"options"`
 }
 
-func ParseJSON(fileLocation *string) (Chapter, error) {
+func ParseJSON(fileLocation *string) (*Chapter, error) {
 	// Read file from OS to bytes
 	jsonPayload, err := os.Open(*fileLocation)
 	if err != nil {
@@ -36,5 +36,5 @@ func ParseJSON(fileLocation *string) (Chapter, error) {
 		return nil, err
 	}
 
-	return parsedJson, nil
+	return &parsedJson, nil
 }
