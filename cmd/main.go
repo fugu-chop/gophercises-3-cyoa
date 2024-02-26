@@ -41,13 +41,7 @@ func main() {
 	}
 
 	// start HTTP server
-	startServer(storyDataHandler)
-}
-
-func startServer(handler *storyHandler) {
-	mux := http.NewServeMux()
-	mux.Handle("/home", *handler)
-	http.ListenAndServe(":8080", mux)
+	log.Fatal(http.ListenAndServe(":8080", *storyDataHandler))
 }
 
 func populateTemplate(templateLocation string) (*template.Template, error) {
