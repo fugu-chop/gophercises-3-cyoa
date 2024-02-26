@@ -20,14 +20,12 @@ type Page struct {
 }
 
 func ParseJSON(fileLocation *string) (*Chapter, error) {
-	// Read file from OS to bytes
 	jsonPayload, err := os.Open(*fileLocation)
 	if err != nil {
 		log.Printf("could not open local json file: %v", err)
 		return nil, err
 	}
 
-	// Unmarshal JSON to type
 	var parsedJson Chapter
 	decoder := json.NewDecoder(jsonPayload)
 	err = decoder.Decode(&parsedJson)

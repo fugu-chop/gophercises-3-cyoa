@@ -35,19 +35,16 @@ func main() {
 		log.Fatalf("could not open local json file: %v", err)
 	}
 
-	// Populate HTML Template
 	template, err := populateTemplate(*templateName)
 	if err != nil {
 		log.Fatalf("could not open parse HTML template: %v", err)
 	}
 
-	// Create handler with data
 	storyDataHandler := &storyHandler{
 		StoryData: *jsonStoryData,
 		Template:  template,
 	}
 
-	// start HTTP server
 	log.Fatal(http.ListenAndServe(":8080", *storyDataHandler))
 }
 
