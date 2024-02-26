@@ -12,14 +12,16 @@
     <p>{{.}}</p>
     {{end}}
 
-    {{if .Options}}
     <h4>What action do you take?</h4>
     <ul>
+      {{if .Options}}
       {{range .Options}}
       <li><a href={{.Arc}}>{{.Text}}</a></li>
       {{end}}
+      {{else}}
+      <li><a href="/intro">Start over.</a></li>
+      {{end}}
     </ul>
-    {{end}}
   </body>
 
 </html>
