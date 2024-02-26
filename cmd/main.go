@@ -15,7 +15,8 @@ type storyHandler struct {
 }
 
 func (s storyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	chapter, ok := strings.CutPrefix(r.URL.Path, "/")
+	chapter, _ := strings.CutPrefix(r.URL.Path, "/")
+	_, ok := s.StoryData[chapter]
 	if chapter == "" || !ok {
 		chapter = story.StoryStart
 	}
