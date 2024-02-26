@@ -2,27 +2,11 @@ package main
 
 import (
 	"flag"
-	story "gophercise-cyoa"
+	story "gophercise-cyoa/story"
 	"log"
 	"net/http"
-	"strings"
 	"text/template"
 )
-
-type storyHandler struct {
-	StoryData story.Chapter
-	Template  *template.Template
-}
-
-func (s storyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	chapter, _ := strings.CutPrefix(r.URL.Path, "/")
-	_, ok := s.StoryData[chapter]
-	if chapter == "" || !ok {
-		chapter = story.StoryStart
-	}
-
-	s.Template.Execute(w, s.StoryData[chapter])
-}
 
 func main() {
 	// Use flags to allow user input file location
@@ -40,7 +24,7 @@ func main() {
 		log.Fatalf("could not open parse HTML template: %v", err)
 	}
 
-	storyDataHandler := &storyHandler{
+	storyDataHandler := &story.StoryHandler{
 		StoryData: *jsonStoryData,
 		Template:  template,
 	}

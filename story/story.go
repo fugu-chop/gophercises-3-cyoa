@@ -3,10 +3,28 @@ package story
 import (
 	"encoding/json"
 	"log"
+	"net/http"
 	"os"
+	"strings"
+	"text/template"
 )
 
 const StoryStart = "intro"
+
+type StoryHandler struct {
+	StoryData Chapter
+	Template  *template.Template
+}
+
+func (s StoryHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	chapter, _ := strings.CutPrefix(r.URL.Path, "/")
+	_, ok := s.StoryData[chapter]
+	if chapter == "" || !ok {
+		chapter = StoryStart
+	}
+
+	s.Template.Execute(w, s.StoryData[chapter])
+}
 
 type Chapter map[string]Page
 type Option struct {
