@@ -5,6 +5,7 @@ import (
 	story "gophercise-cyoa"
 	"log"
 	"net/http"
+	"strings"
 	"text/template"
 )
 
@@ -14,7 +15,12 @@ type storyHandler struct {
 }
 
 func (s storyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	s.Template.Execute(w, s.StoryData[story.StoryStart])
+	chapter, ok := strings.CutPrefix(r.URL.Path, "/")
+	if chapter == "" || !ok {
+		chapter = story.StoryStart
+	}
+
+	s.Template.Execute(w, s.StoryData[chapter])
 }
 
 func main() {
