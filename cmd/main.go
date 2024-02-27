@@ -24,12 +24,9 @@ func main() {
 		log.Fatalf("could not open parse HTML template: %v", err)
 	}
 
-	storyDataHandler := &story.StoryHandler{
-		StoryData: *jsonStoryData,
-		Template:  template,
-	}
+	storyDataHandler := story.CreateHandler(jsonStoryData, template)
 
-	log.Fatal(http.ListenAndServe(":8080", *storyDataHandler))
+	log.Fatal(http.ListenAndServe(":8080", storyDataHandler))
 }
 
 func populateTemplate(templateLocation string) (*template.Template, error) {

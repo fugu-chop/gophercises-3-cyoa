@@ -58,3 +58,10 @@ func ParseJSON(fileLocation *string) (*Chapter, error) {
 
 	return &parsedJson, nil
 }
+
+func CreateHandler(chapter *Chapter, template *template.Template) http.Handler {
+	return &StoryHandler{
+		StoryData: *chapter,
+		Template:  template,
+	}
+}
