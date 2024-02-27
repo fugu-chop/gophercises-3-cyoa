@@ -26,7 +26,9 @@ func main() {
 
 	storyDataHandler := story.CreateHandler(jsonStoryData, template)
 
-	log.Fatal(http.ListenAndServe(":8080", storyDataHandler))
+	mux := http.NewServeMux()
+	mux.Handle("/", storyDataHandler)
+	log.Fatal(http.ListenAndServe(":8080", mux))
 }
 
 func populateTemplate(templateLocation string) (*template.Template, error) {
