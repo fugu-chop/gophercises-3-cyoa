@@ -23,7 +23,11 @@ func (s StoryHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		chapter = StoryStart
 	}
 
-	s.Template.Execute(w, s.StoryData[chapter])
+	err := s.Template.Execute(w, s.StoryData[chapter])
+	if err != nil {
+		log.Printf("error processing template: %v", err)
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+	}
 }
 
 type Chapter map[string]Page
