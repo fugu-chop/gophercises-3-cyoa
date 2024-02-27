@@ -19,7 +19,7 @@ func main() {
 		log.Fatalf("could not open local json file: %v", err)
 	}
 
-	template, err := populateTemplate(*templateName)
+	template, err := template.ParseFiles(*templateName)
 	if err != nil {
 		log.Fatalf("could not open parse HTML template: %v", err)
 	}
@@ -29,14 +29,4 @@ func main() {
 	mux := http.NewServeMux()
 	mux.Handle("/", storyDataHandler)
 	log.Fatal(http.ListenAndServe(":8080", mux))
-}
-
-func populateTemplate(templateLocation string) (*template.Template, error) {
-	tmpl, err := template.ParseFiles(templateLocation)
-	if err != nil {
-		log.Printf("could not open local json file: %v", err)
-		return nil, err
-	}
-
-	return tmpl, nil
 }
